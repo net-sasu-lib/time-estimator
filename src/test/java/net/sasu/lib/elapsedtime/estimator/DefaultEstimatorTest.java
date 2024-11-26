@@ -1,7 +1,8 @@
 package net.sasu.lib.elapsedtime.estimator;
 
-import net.sasu.lib.time.stopwatch.DefaultStopwatch;
-
+import net.sasu.lib.time.elapsedTime.ElapsedTime;
+import net.sasu.lib.time.stopwatch.Stopwatch;
+import net.sasu.lib.time.stopwatch.mock.MockStopwatch;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -25,8 +26,7 @@ class DefaultEstimatorTest {
 
         defaultEstimator.initAndStart(totalWorkUnits);
 
-        Duration zero = Duration.of(0, ChronoUnit.MILLIS);
-        Assertions.assertEquals(zero, defaultEstimator.getElapsedTime());
+        Assertions.assertEquals(ElapsedTime.ZERO, defaultEstimator.getElapsedTime());
         Assertions.assertEquals(MAX_DURATION, defaultEstimator.getRemainingTime());
 
         long timeFactor = 3; //simply incrementing by one does not catch all bugs
@@ -35,7 +35,7 @@ class DefaultEstimatorTest {
             mockStopwatch.increment(timeFactor);
             defaultEstimator.completeWorkUnits(1);
 
-            Duration expectedElapsedTime = Duration.of(i * timeFactor, ChronoUnit.MILLIS);
+            ElapsedTime expectedElapsedTime = ElapsedTime.of(i * timeFactor, ChronoUnit.MILLIS);
             Assertions.assertEquals(expectedElapsedTime, defaultEstimator.getElapsedTime());
 
             System.out.println("Elapsed time is " + defaultEstimator.getElapsedTime() +
@@ -50,7 +50,7 @@ class DefaultEstimatorTest {
         mockStopwatch.increment(timeFactor);
         defaultEstimator.completeWorkUnits(1);
 
-        Assertions.assertEquals(Duration.of(totalWorkUnits * timeFactor, ChronoUnit.MILLIS), defaultEstimator.getElapsedTime());
+        Assertions.assertEquals(ElapsedTime.of(totalWorkUnits * timeFactor, ChronoUnit.MILLIS), defaultEstimator.getElapsedTime());
         Assertions.assertEquals(Duration.ZERO , defaultEstimator.getRemainingTime());
     }
     
@@ -72,7 +72,7 @@ class DefaultEstimatorTest {
 
     @Test
     void createInstanceAndStart() {
-        DefaultEstimator<DefaultStopwatch> defaultEstimator = DefaultEstimator.createInstanceAndStart(1);
+        DefaultEstimator<Stopwatch> defaultEstimator = DefaultEstimator.createInstanceAndStart(1);
         assertTrue(defaultEstimator.isRunning());
     }
 

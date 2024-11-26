@@ -1,7 +1,10 @@
 package net.sasu.lib.elapsedtime.estimator;
 
-import net.sasu.lib.time.stopwatch.DefaultStopwatch;
 import net.sasu.lib.time.stopwatch.Stopwatch;
+import net.sasu.lib.time.stopwatch.StopwatchInterface;
+import net.sasu.lib.time.stopwatch.state.StopwatchState;
+
+import java.time.Instant;
 
 /**
  * Basic implementation for estimations with low variability.
@@ -12,7 +15,7 @@ import net.sasu.lib.time.stopwatch.Stopwatch;
  * @author Sasu
  *
  */
-public class DefaultEstimator<StopwatchType extends Stopwatch<StopwatchType>>
+public class DefaultEstimator<StopwatchType extends StopwatchInterface<StopwatchType>>
         extends BaseEstimator<DefaultEstimator<StopwatchType>, StopwatchType>{
 
     public DefaultEstimator(StopwatchType stopwatch) {
@@ -27,15 +30,24 @@ public class DefaultEstimator<StopwatchType extends Stopwatch<StopwatchType>>
         super(stopwatch, totalWorkUnitsArg, completedWorkUnitsArg);
     }
 
-    public static DefaultEstimator<DefaultStopwatch> createInstanceAndStart(long totalWorkUnitsArg) {
-        DefaultEstimator<DefaultStopwatch> defaultEstimator = new DefaultEstimator<>(new DefaultStopwatch(), totalWorkUnitsArg);
+    public static DefaultEstimator<Stopwatch> createInstanceAndStart(long totalWorkUnitsArg) {
+        DefaultEstimator<Stopwatch> defaultEstimator = new DefaultEstimator<>(new Stopwatch(), totalWorkUnitsArg);
         defaultEstimator.start();
         return defaultEstimator;
     }
 
     @Override
-    public StopwatchType saveCurrentTime() {
-        return this.getStopwatch();
+    public Instant getStartTime() {
+        return this.getStopwatch().getStartTime();
     }
 
+    @Override
+    public Instant getStopTime() {
+        return this.getStopwatch().getStopTime();
+    }
+
+    @Override
+    public StopwatchState getState() {
+        return this.getStopwatch().getState();
+    }
 }

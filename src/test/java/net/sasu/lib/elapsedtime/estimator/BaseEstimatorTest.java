@@ -1,6 +1,7 @@
 package net.sasu.lib.elapsedtime.estimator;
 
-import net.sasu.lib.elapsedtime.time.MockStopwatch;
+import net.sasu.lib.time.stopwatch.mock.MockStopwatch;
+import net.sasu.lib.time.stopwatch.state.StopwatchState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -59,7 +60,7 @@ class BaseEstimatorTest {
 		this.mockStopwatch.start();
 		this.mockEstimator.stop();
 
-        assertFalse(this.mockStopwatch.isRunning());
+        assertFalse(this.mockStopwatch.getState().equals(StopwatchState.STARTED));
 	}
 	
 	@Test
@@ -72,7 +73,7 @@ class BaseEstimatorTest {
 		this.mockEstimator.setTotalWorkUnits(10);
 		this.mockEstimator.start();
 
-		assertTrue(this.mockStopwatch.isRunning());
+		assertTrue(this.mockStopwatch.isRunning(), "State: " + this.mockStopwatch.getState());
 	}
 	
 	@Test

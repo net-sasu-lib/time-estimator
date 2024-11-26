@@ -3,7 +3,9 @@
  */
 package net.sasu.lib.elapsedtime.estimator;
 
-import net.sasu.lib.time.stopwatch.Stopwatch;
+import net.sasu.lib.time.elapsedTime.ElapsedTime;
+import net.sasu.lib.time.stopwatch.StopwatchInterface;
+import net.sasu.lib.time.stopwatch.state.StopwatchState;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.math3.fraction.BigFraction;
 
@@ -23,7 +25,7 @@ import java.util.Objects;
  */
 public abstract class BaseEstimator<
         EstimatorType extends BaseEstimator<EstimatorType, StopwatchType>,
-        StopwatchType extends Stopwatch<StopwatchType>
+        StopwatchType extends StopwatchInterface<StopwatchType>
         > implements Estimator<EstimatorType, StopwatchType> {
 
     private long totalWorkUnits;
@@ -68,7 +70,7 @@ public abstract class BaseEstimator<
     }
 
     @Override
-    public Duration getElapsedTime() {
+    public ElapsedTime getElapsedTime() {
         return this.stopwatch.getElapsedTime();
     }
 
@@ -118,7 +120,7 @@ public abstract class BaseEstimator<
 
     @Override
     public EstimatorType initAndStart(long totalWorkUnitsArg) {
-        if(this.isRunning()){
+        if(this.getState().equals(StopwatchState.STARTED)){
             throw new IllegalStateException("Estimator has already been started");
         }
         if(totalWorkUnitsArg <= 0){
@@ -142,7 +144,7 @@ public abstract class BaseEstimator<
         }
 
         BigFraction ratioRemaining = new BigFraction(remainingWorkUnits, completedWorkUnits);
-        BigFraction remainingTimeInNanos = ratioRemaining.multiply(this.getElapsedTime().toNanos());
+        BigFraction remainingTimeInNanos = ratioRemaining.multiply(this.getElapsedTime().getDuration().toNanos());
 
         return Duration.ofNanos(remainingTimeInNanos.longValue());
     }
@@ -154,21 +156,6 @@ public abstract class BaseEstimator<
     @Override
     public InstantSource getInstantSource() {
         return this.stopwatch.getInstantSource();
-    }
-
-    @Override
-    public Instant getInstant() {
-        return this.stopwatch.getInstant();
-    }
-
-    @Override
-    public boolean isRunning() {
-        return this.stopwatch.isRunning();
-    }
-
-    @Override
-    public List<Instant> getAllTimePoints() {
-        return this.stopwatch.getAllTimePoints();
     }
 
     public StopwatchType getStopwatch() {

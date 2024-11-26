@@ -1,6 +1,9 @@
 package net.sasu.lib.elapsedtime.estimator;
 
-import net.sasu.lib.elapsedtime.time.MockStopwatch;
+import net.sasu.lib.time.stopwatch.mock.MockStopwatch;
+import net.sasu.lib.time.stopwatch.state.StopwatchState;
+
+import java.time.Instant;
 
 class MockEstimator<EstimatorType extends BaseEstimator<EstimatorType, MockStopwatch>> extends BaseEstimator<EstimatorType, MockStopwatch> {
 
@@ -28,8 +31,17 @@ class MockEstimator<EstimatorType extends BaseEstimator<EstimatorType, MockStopw
     }
 
     @Override
-    public MockStopwatch saveCurrentTime() {
-        return this.stopwatch;
+    public Instant getStartTime() {
+        return this.stopwatch.getStartTime();
     }
 
+    @Override
+    public Instant getStopTime() {
+        return this.stopwatch.getStopTime();
+    }
+
+    @Override
+    public StopwatchState getState() {
+        return this.stopwatch.getState();
+    }
 }

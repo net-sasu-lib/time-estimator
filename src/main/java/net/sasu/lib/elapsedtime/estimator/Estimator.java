@@ -2,7 +2,8 @@ package net.sasu.lib.elapsedtime.estimator;
 
 import java.time.Duration;
 
-import net.sasu.lib.time.stopwatch.Stopwatch;
+import net.sasu.lib.time.elapsedTime.ElapsedTime;
+import net.sasu.lib.time.stopwatch.StopwatchInterface;
 
 /**
  * Estimator performing the concrete estimation, either general or optimized
@@ -14,9 +15,9 @@ import net.sasu.lib.time.stopwatch.Stopwatch;
  */
 public interface Estimator<
         EstimatorType extends Estimator<EstimatorType, StopwatchType>,
-        StopwatchType extends Stopwatch<StopwatchType>
+        StopwatchType extends StopwatchInterface<StopwatchType>
         >
-        extends Stopwatch<StopwatchType> {
+        extends StopwatchInterface<StopwatchType> {
 
     Duration MAX_DURATION = Duration.ofSeconds(
             Long.MAX_VALUE,   // Max allowed seconds
@@ -47,7 +48,7 @@ public interface Estimator<
     /**
      * @return returns elapsed time in given time units
      */
-    Duration getElapsedTime();
+    ElapsedTime getElapsedTime();
     
     /**
      *
