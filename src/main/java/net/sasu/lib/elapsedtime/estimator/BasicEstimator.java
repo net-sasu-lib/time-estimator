@@ -18,7 +18,7 @@ import java.util.Queue;
  *   <li>Adapt to changing execution speeds</li>
  *   <li>Smooth out occasional outliers</li>
  *   <li>Provide more accurate estimates based on recent performance</li>
- * </ul></p>
+ * </ul>
  *
  * <p><b>Moving Average Example:</b><br>
  * With window size 3 and work unit completion times [1000ms, 1100ms, 900ms, 1050ms]:
@@ -26,7 +26,7 @@ import java.util.Queue;
  *   <li>After 3rd measurement: average of [1000ms, 1100ms, 900ms] = 1000ms</li>
  *   <li>After 4th measurement: average of [1100ms, 900ms, 1050ms] = 1016ms</li>
  * </ul>
- * The oldest measurement is dropped when the window is full.</p>
+ * The oldest measurement is dropped when the window is full.
  *
  * @author Sasu
  */
@@ -115,11 +115,22 @@ public class BasicEstimator extends DefaultEstimator<Stopwatch> {
      */
     @Override
     public Duration getRemainingTime() {
-        if (recentDurations.isEmpty() || getRemainingWorkUnits() == 0) {
+        if (getRemainingWorkUnits() == 0) {
             return Duration.ZERO;
         }
 
-        // Calculate average duration per work unit
+        // If no measurements yet but we have work to do, use elapsed time for estimation
+        if (recentDurations.isEmpty()) {
+            if (getCompletedWorkUnits() == 0) {
+                return MAX_DURATION;
+            }
+            // Calculate based on elapsed time, similar to DefaultEstimator
+            long elapsedNanos = getElapsedTime().getDuration().toNanos();
+            double nanosPerUnit = (double) elapsedNanos / getCompletedWorkUnits();
+            return Duration.ofNanos((long) (nanosPerUnit * getRemainingWorkUnits()));
+        }
+
+        // Calculate average duration per work unit from recent measurements
         double averageDurationNanos = recentDurations.stream()
                 .mapToLong(Long::longValue)
                 .average()
