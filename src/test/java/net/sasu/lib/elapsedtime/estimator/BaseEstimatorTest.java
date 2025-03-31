@@ -29,18 +29,14 @@ class BaseEstimatorTest {
 
 	@Test
 	void completeWorkUnitsExceptionIae() {
-		Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-			this.mockEstimator.completeWorkUnits(-1);
-		});
+		Throwable exception = assertThrows(IllegalArgumentException.class, () -> this.mockEstimator.completeWorkUnits(-1));
 		assertNotNull(exception);
 	}
 
 	@Test
 	void completeWorkUnitsExceptionIse() {
 		this.mockEstimator.initAndStart(10L);
-		Throwable exception = assertThrows(IllegalStateException.class, () -> {
-			this.mockEstimator.completeWorkUnits(11);
-		});
+		Throwable exception = assertThrows(IllegalStateException.class, () -> this.mockEstimator.completeWorkUnits(11));
 		assertNotNull(exception);
 	}
 
@@ -60,7 +56,7 @@ class BaseEstimatorTest {
 		this.mockStopwatch.start();
 		this.mockEstimator.stop();
 
-        assertFalse(this.mockStopwatch.getState().equals(StopwatchState.STARTED));
+        assertNotEquals(StopwatchState.STARTED, this.mockStopwatch.getState());
 	}
 	
 	@Test
