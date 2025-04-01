@@ -32,11 +32,12 @@ class DefaultEstimatorTest {
         long timeFactor = 3; //simply incrementing by one does not catch all bugs
 
         for(int i = 1; i < totalWorkUnits; i++) {
-            mockStopwatch.increment(timeFactor);
+            mockStopwatch.incrementMilliseconds(timeFactor);
             defaultEstimator.completeWorkUnits(1);
 
             ElapsedTime expectedElapsedTime = ElapsedTime.of(i * timeFactor, ChronoUnit.MILLIS);
-            Assertions.assertEquals(expectedElapsedTime, defaultEstimator.getElapsedTime());
+            Assertions.assertEquals(expectedElapsedTime, defaultEstimator.getElapsedTime(),
+                    "Error when getting remaining time on round " + i);
 
             System.out.println("Elapsed time is " + defaultEstimator.getElapsedTime() +
                     " after completing " + defaultEstimator.getCompletedWorkUnits() + " work units.");
@@ -47,7 +48,7 @@ class DefaultEstimatorTest {
             Assertions.assertEquals(expectedRemainingTime, remainingTime);
         }
 
-        mockStopwatch.increment(timeFactor);
+        mockStopwatch.incrementMilliseconds(timeFactor);
         defaultEstimator.completeWorkUnits(1);
 
         Assertions.assertEquals(ElapsedTime.of(totalWorkUnits * timeFactor, ChronoUnit.MILLIS), defaultEstimator.getElapsedTime());

@@ -43,7 +43,7 @@ class BaseEstimatorTest {
 	@Test
 	void getElapsedTimeAsStringTest() {
 		this.mockStopwatch.start();
-		this.mockStopwatch.increment();
+		this.mockStopwatch.incrementSecond();
 
 		String elapsedTime = this.mockStopwatch.getElapsedTime().toString();
 		String elapsedTimeAsString = this.mockEstimator.getElapsedTimeAsString();

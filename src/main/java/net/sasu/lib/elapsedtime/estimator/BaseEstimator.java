@@ -49,8 +49,8 @@ public abstract class BaseEstimator<
      * Constructs a new BaseEstimator with the specified stopwatch and work units.
      *
      * @param stopwatch The stopwatch to use for time tracking
-     * @param totalWorkUnits The total number of work units to be completed
-     * @param completedWorkUnits The number of work units already completed
+     * @param totalWorkUnits The total amount of work units to be completed
+     * @param completedWorkUnits The amount of work units already completed
      * @throws NullPointerException if stopwatch is null
      * @throws IllegalArgumentException if completedWorkUnits is negative or greater than totalWorkUnits
      */
@@ -68,7 +68,7 @@ public abstract class BaseEstimator<
     /**
      * Records the completion of work units and updates the progress.
      *
-     * @param workUnitsCompleted The number of work units that were completed
+     * @param workUnitsCompleted The amount of work units that were completed
      * @throws IllegalArgumentException if workUnitsCompleted is negative
      * @throws IllegalStateException if workUnitsCompleted is greater than remaining work units
      */
@@ -88,9 +88,9 @@ public abstract class BaseEstimator<
     }
 
     /**
-     * Sets the total number of work units to be completed.
+     * Sets the total amount of work units to be completed.
      *
-     * @param totalWorkUnits The total number of work units
+     * @param totalWorkUnits The total amount of work units
      */
     public void setTotalWorkUnits(long totalWorkUnits) {
         this.totalWorkUnits = totalWorkUnits;
@@ -124,9 +124,9 @@ public abstract class BaseEstimator<
     }
 
     /**
-     * Returns the number of work units remaining to be completed.
+     * Returns the amount of work units remaining to be completed.
      *
-     * @return The number of remaining work units
+     * @return The amount of remaining work units
      */
     public long getRemainingWorkUnits() {
         return this.totalWorkUnits - this.completedWorkUnits;
@@ -159,7 +159,7 @@ public abstract class BaseEstimator<
     /**
      * Initializes the estimator with the specified total work units and starts the stopwatch.
      *
-     * @param totalWorkUnitsArg The total number of work units to be completed
+     * @param totalWorkUnitsArg The total amount of work units to be completed
      * @return This estimator instance
      * @throws IllegalStateException if the estimator has already been started
      * @throws IllegalArgumentException if totalWorkUnitsArg is not greater than zero

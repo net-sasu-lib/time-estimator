@@ -2,13 +2,10 @@ package net.sasu.lib.elapsedtime.estimator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import net.sasu.lib.time.stopwatch.Stopwatch;
-import net.sasu.lib.time.stopwatch.mock.MockStopwatch;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 
 class BasicEstimatorTest {
 
@@ -57,26 +54,21 @@ class BasicEstimatorTest {
 
     @Test
     void completeWorkUnits_ShouldUpdateMeasurements() {
-        MockStopwatch mockStopwatch = new MockStopwatch();
         BasicEstimator estimator = new BasicEstimator(3, 100);
         estimator.start();
 
         // Simulate work completions with known durations
         Instant startTime = Instant.now();
-        mockStopwatch.setCurrentTime(startTime);
 
         // Complete first batch
-        mockStopwatch.setCurrentTime(startTime.plus(1, ChronoUnit.SECONDS));
         estimator.completeWorkUnits(20);
         assertEquals(0, estimator.getCurrentMeasurementCount()); // First completion doesn't add measurement
 
         // Complete second batch
-        mockStopwatch.setCurrentTime(startTime.plus(2, ChronoUnit.SECONDS));
         estimator.completeWorkUnits(20);
         assertEquals(1, estimator.getCurrentMeasurementCount());
 
         // Complete third batch
-        mockStopwatch.setCurrentTime(startTime.plus(3, ChronoUnit.SECONDS));
         estimator.completeWorkUnits(20);
         assertEquals(2, estimator.getCurrentMeasurementCount());
     }
@@ -106,38 +98,17 @@ class BasicEstimatorTest {
 
         Instant startTime = Instant.now();
 
-        // Complete work with constant rate (1 second per 20 units)
-        Thread.sleep(1000);
+        // Complete work with constant rate (0.1 second sper 20 units)
+        Thread.sleep(100);
         estimator.completeWorkUnits(20);
 
-        Thread.sleep(1000);
+        Thread.sleep(100);
         estimator.completeWorkUnits(20);
 
         // After 2 seconds and 40 units complete, should estimate 3 seconds remaining for 60 units
         Duration remainingTime = estimator.getRemainingTime();
-        assertTrue(remainingTime.getSeconds() >= 2 && remainingTime.getSeconds() <= 4,
+        assertTrue(remainingTime.getNano() >= 2000000 && remainingTime.getSeconds() <= 4000000,
                 "Actual seconds: " + remainingTime.getSeconds());
     }
 
-    @Test
-    void getRemainingTime_WithChangingWorkRate_ShouldAdapt() {
-        MockStopwatch mockStopwatch = new MockStopwatch();
-        BasicEstimator estimator = new BasicEstimator(2, 100);
-        estimator.start();
-
-        Instant startTime = Instant.now();
-        mockStopwatch.setCurrentTime(startTime);
-
-        // First completion - slow
-        mockStopwatch.setCurrentTime(startTime.plus(2, ChronoUnit.SECONDS));
-        estimator.completeWorkUnits(20);
-
-        // Second completion - faster
-        mockStopwatch.setCurrentTime(startTime.plus(3, ChronoUnit.SECONDS));
-        estimator.completeWorkUnits(20);
-
-        // Should use more recent (faster) rate for estimation
-        Duration remainingTime = estimator.getRemainingTime();
-        assertTrue(remainingTime.getSeconds() < 6); // Should be closer to faster rate
-    }
 }

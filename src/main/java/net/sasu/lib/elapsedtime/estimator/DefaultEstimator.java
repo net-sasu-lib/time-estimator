@@ -47,7 +47,7 @@ public class DefaultEstimator<StopwatchType extends StopwatchInterface<Stopwatch
      * Constructs a new DefaultEstimator with the specified stopwatch and total work units.
      *
      * @param stopwatch The stopwatch to use for time tracking
-     * @param totalWorkUnitsArg The total number of work units to be completed
+     * @param totalWorkUnitsArg The total amount of work units to be completed
      */
     public DefaultEstimator(StopwatchType stopwatch, long totalWorkUnitsArg) {
         super(stopwatch, totalWorkUnitsArg, 0);
@@ -58,8 +58,8 @@ public class DefaultEstimator<StopwatchType extends StopwatchInterface<Stopwatch
      * and completed work units.
      *
      * @param stopwatch The stopwatch to use for time tracking
-     * @param totalWorkUnitsArg The total number of work units to be completed
-     * @param completedWorkUnitsArg The number of work units already completed
+     * @param totalWorkUnitsArg The total amount of work units to be completed
+     * @param completedWorkUnitsArg The amount of work units already completed
      */
     public DefaultEstimator(StopwatchType stopwatch, long totalWorkUnitsArg, long completedWorkUnitsArg) {
         super(stopwatch, totalWorkUnitsArg, completedWorkUnitsArg);
@@ -69,7 +69,7 @@ public class DefaultEstimator<StopwatchType extends StopwatchInterface<Stopwatch
      * Creates and starts a new DefaultEstimator with a new Stopwatch instance.
      * This is a convenience factory method for quick initialization of the estimator.
      *
-     * @param totalWorkUnitsArg The total number of work units to be completed
+     * @param totalWorkUnitsArg The total amount of work units to be completed
      * @return A new, started DefaultEstimator instance
      */
     public static DefaultEstimator<Stopwatch> createInstanceAndStart(long totalWorkUnitsArg) {

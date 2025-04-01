@@ -56,7 +56,7 @@ class MockEstimator<EstimatorType extends BaseEstimator<EstimatorType, MockStopw
     /**
      * Initializes and starts the mock estimator, tracking that the method was called.
      *
-     * @param remainingWorkUnitsArg The total number of work units to be completed
+     * @param remainingWorkUnitsArg The total amount of work units to be completed
      * @return The actual estimator instance
      */
     @Override

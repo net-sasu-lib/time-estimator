@@ -35,7 +35,7 @@ public interface Estimator<
 
     /**
      * The maximum duration that can be represented.
-     * Defined as the maximum number of seconds with maximum nanoseconds.
+     * Defined as the maximum amount of seconds with maximum nanoseconds.
      */
     Duration MAX_DURATION = Duration.ofSeconds(
             Long.MAX_VALUE,   // Max allowed seconds
@@ -48,10 +48,10 @@ public interface Estimator<
     String INFINITY_STRING = "∞";
 
     /**
-     * Initializes and starts the estimator with the specified number of work units.
+     * Initializes and starts the estimator with the specified amount of work units.
      * This method should be called before any other operations.
      *
-     * @param remainingWorkUnits The total number of work units to be completed
+     * @param remainingWorkUnits The total amount of work units to be completed
      * @return The initialized estimator instance
      * @throws IllegalStateException if the estimator has already been started
      * @throws IllegalArgumentException if remainingWorkUnits is not positive
@@ -69,7 +69,7 @@ public interface Estimator<
     /**
      * Records the completion of work units and updates the progress tracking.
      *
-     * @param workUnitsCompleted The number of work units that were completed
+     * @param workUnitsCompleted The amount of work units that were completed
      * @throws IllegalArgumentException if workUnitsCompleted is negative
      * @throws IllegalStateException if more work units are completed than remaining
      */
