@@ -88,7 +88,7 @@ public interface Estimator<
      *
      * @return The estimated remaining time as a Duration
      */
-    Duration getRemainingTime();
+    Duration remainingDuration();
 
     /**
      * Returns the estimated remaining time in a human-readable format.

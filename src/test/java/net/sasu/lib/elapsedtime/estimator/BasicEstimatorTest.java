@@ -38,10 +38,10 @@ class BasicEstimatorTest {
     }
 
     @Test
-    void getRemainingTime_WithNoWorkCompleted_ShouldReturnMaxDuration() {
+    void remainingDuration_WithNoWorkCompleted_ShouldReturnMaxDuration() {
         BasicEstimator estimator = new BasicEstimator(3, 100);
         estimator.start();
-        assertEquals(Estimator.MAX_DURATION, estimator.getRemainingTime());
+        assertEquals(Estimator.MAX_DURATION, estimator.remainingDuration());
     }
 
     @Test
@@ -49,7 +49,7 @@ class BasicEstimatorTest {
         BasicEstimator estimator = new BasicEstimator(3, 10);
         estimator.start();
         estimator.completeWorkUnits(10);
-        assertEquals(Duration.ZERO, estimator.getRemainingTime());
+        assertEquals(Duration.ZERO, estimator.remainingDuration());
     }
 
     @Test
@@ -91,7 +91,7 @@ class BasicEstimatorTest {
      * @throws InterruptedException when something gets interrupted
      */
     @Test
-    void getRemainingTime_WithConstantWorkRate_ShouldProvideAccurateEstimate() throws InterruptedException {
+    void remainingDuration_WithConstantWorkRate_ShouldProvideAccurateEstimate() throws InterruptedException {
         BasicEstimator estimator = new BasicEstimator(3, 100);
 
         estimator.start();
@@ -106,7 +106,7 @@ class BasicEstimatorTest {
         estimator.completeWorkUnits(20);
 
         // After 2 seconds and 40 units complete, should estimate 3 seconds remaining for 60 units
-        Duration remainingTime = estimator.getRemainingTime();
+        Duration remainingTime = estimator.remainingDuration();
         assertTrue(remainingTime.getNano() >= 2000000 && remainingTime.getSeconds() <= 4000000,
                 "Actual seconds: " + remainingTime.getSeconds());
     }

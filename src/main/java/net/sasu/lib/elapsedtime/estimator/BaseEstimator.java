@@ -93,6 +93,9 @@ public abstract class BaseEstimator<
      * @param totalWorkUnits The total amount of work units
      */
     public void setTotalWorkUnits(long totalWorkUnits) {
+        if(totalWorkUnits < 0){
+            throw new IllegalArgumentException("totalWorkUnits may not be negative");
+        }
         this.totalWorkUnits = totalWorkUnits;
     }
 
@@ -111,7 +114,7 @@ public abstract class BaseEstimator<
         if(this.stopwatch == null) {
             throw new IllegalStateException("Stopwatch may not be null");
         }
-        if(this.totalWorkUnits == 0) {
+        if(this.totalWorkUnits < 1) {
             throw new IllegalStateException("To start estimator totalWorkUnits must be greater than zero");
         }
         return this.stopwatch.start();
@@ -148,7 +151,7 @@ public abstract class BaseEstimator<
      */
     @Override
     public String getRemainingTimeAsString() {
-        Duration remainingTime = this.getRemainingTime();
+        Duration remainingTime = this.remainingDuration();
         if(remainingTime.equals(MAX_DURATION)){
             return Estimator.INFINITY_STRING;
 
@@ -185,7 +188,7 @@ public abstract class BaseEstimator<
      * @return The estimated remaining duration
      */
     @Override
-    public Duration getRemainingTime() {
+    public Duration remainingDuration() {
         final long remainingWorkUnits = this.getRemainingWorkUnits();
         if (this.getTotalWorkUnits() == 0 || remainingWorkUnits == 0) {
             return Duration.ZERO;
@@ -200,6 +203,14 @@ public abstract class BaseEstimator<
         BigFraction remainingTimeInNanos = ratioRemaining.multiply(this.getElapsedTime().getDuration().toNanos());
 
         return Duration.ofNanos(remainingTimeInNanos.longValue());
+    }
+
+    /**
+     * @see #remainingDuration()
+     * @return The estimated remaining time as ElapsedTime object
+     */
+    public ElapsedTime remaining() {
+        return new ElapsedTime(this.remainingDuration());
     }
 
     /**

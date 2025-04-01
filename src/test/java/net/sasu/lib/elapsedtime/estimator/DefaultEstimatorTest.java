@@ -19,7 +19,7 @@ import java.time.temporal.ChronoUnit;
 class DefaultEstimatorTest {
 
     @Test
-    void getRemainingTimeTest(){
+    void remainingDurationTest(){
         final MockStopwatch mockStopwatch = new MockStopwatch();
         DefaultEstimator<MockStopwatch> defaultEstimator = new DefaultEstimator<>(mockStopwatch);
         final long totalWorkUnits = 10;
@@ -27,7 +27,7 @@ class DefaultEstimatorTest {
         defaultEstimator.initAndStart(totalWorkUnits);
 
         Assertions.assertEquals(ElapsedTime.ZERO, defaultEstimator.getElapsedTime());
-        Assertions.assertEquals(MAX_DURATION, defaultEstimator.getRemainingTime());
+        Assertions.assertEquals(MAX_DURATION, defaultEstimator.remainingDuration());
 
         long timeFactor = 3; //simply incrementing by one does not catch all bugs
 
@@ -46,7 +46,7 @@ class DefaultEstimatorTest {
 
             long expectedRemainingTimeInMs = totalWorkUnits - i;
             Duration expectedRemainingTime = Duration.of(expectedRemainingTimeInMs * timeFactor, ChronoUnit.MILLIS);
-            Duration remainingTime = defaultEstimator.getRemainingTime();
+            Duration remainingTime = defaultEstimator.remainingDuration();
             Assertions.assertEquals(expectedRemainingTime, remainingTime);
         }
 
@@ -54,7 +54,7 @@ class DefaultEstimatorTest {
         defaultEstimator.completeWorkUnits(1);
 
         Assertions.assertEquals(ElapsedTime.of(totalWorkUnits * timeFactor, ChronoUnit.MILLIS), defaultEstimator.getElapsedTime());
-        Assertions.assertEquals(Duration.ZERO , defaultEstimator.getRemainingTime());
+        Assertions.assertEquals(Duration.ZERO , defaultEstimator.remainingDuration());
     }
     
     /**

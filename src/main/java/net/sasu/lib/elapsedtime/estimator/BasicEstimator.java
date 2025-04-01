@@ -1,5 +1,6 @@
 package net.sasu.lib.elapsedtime.estimator;
 
+import net.sasu.lib.time.elapsedTime.ElapsedTime;
 import net.sasu.lib.time.stopwatch.Stopwatch;
 
 import java.time.Duration;
@@ -114,7 +115,7 @@ public class BasicEstimator extends DefaultEstimator<Stopwatch> {
      *         no measurements are available or no work remains
      */
     @Override
-    public Duration getRemainingTime() {
+    public Duration remainingDuration() {
         if (getRemainingWorkUnits() == 0) {
             return Duration.ZERO;
         }
@@ -139,6 +140,14 @@ public class BasicEstimator extends DefaultEstimator<Stopwatch> {
         // Calculate total remaining time
         long remainingNanos = (long) (averageDurationNanos * getRemainingWorkUnits());
         return Duration.ofNanos(remainingNanos);
+    }
+
+    /**
+     * @see #remainingDuration()
+     * @return The estimated remaining time as ElapsedTime object
+     */
+    public ElapsedTime remaining() {
+        return new ElapsedTime(this.remainingDuration());
     }
 
     /**

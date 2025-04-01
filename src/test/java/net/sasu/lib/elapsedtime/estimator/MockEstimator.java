@@ -54,6 +54,23 @@ class MockEstimator<EstimatorType extends BaseEstimator<EstimatorType, MockStopw
     }
 
     /**
+     * Constructs a new MockEstimator with the specified estimator, mock stopwatch,
+     * total work units and completed work units.
+     *
+     * @param estimator The actual estimator instance to be mocked
+     * @param stopwatch The mock stopwatch to be used for time tracking
+     * @param totalWorkUnits The total number of work units
+     * @param completedWorkUnits The number of completed work units
+     * @throws IllegalArgumentException if completedWorkUnits is negative or greater than totalWorkUnits
+     */
+    public MockEstimator(EstimatorType estimator, MockStopwatch stopwatch,
+                         long totalWorkUnits, long completedWorkUnits) {
+        super(stopwatch, totalWorkUnits, completedWorkUnits);
+        this.stopwatch = stopwatch;
+        this.estimator = estimator;
+    }
+
+    /**
      * Initializes and starts the mock estimator, tracking that the method was called.
      *
      * @param remainingWorkUnitsArg The total amount of work units to be completed
