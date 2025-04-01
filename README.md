@@ -1,16 +1,12 @@
-Here's a draft README.md for your project:
-
 # Time Estimator Library
 
 A Java library for estimating remaining time in iterative processes. This library provides accurate time estimations for tasks with known total work units, using different estimation strategies including moving averages.
 
 ## Features
 
-- Multiple estimator implementations for different use cases
-- Accurate time tracking using custom stopwatch implementation
-- Moving average calculations for improved estimation accuracy
-- Support for variable-speed processes
-- Easy-to-use API
+- Easy-to-use API with good developer UX
+- Simple default estimator implementation good for most use cases
+- Extensible for implementing a better estimator for your specific use case , like variable-speed processes
 
 ## Installation
 
@@ -64,14 +60,13 @@ estimator.initAndStart(totalWorkUnits);
 
 ### DefaultEstimator
 
-Provides simple time estimation based on overall average completion time.
+Provides simple time estimation based on overall average completion time. You can use your own
+[StopWatch](https://github.com/net-sasu-lib/stopwatch) implementation with DefaultEstimator if so desired.
 
 ```java
 DefaultEstimator<Stopwatch> estimator = 
     DefaultEstimator.createInstanceAndStart(totalWorkUnits);
 ```
-
-Yo
 
 ## Moving Average Concept
 
@@ -107,6 +102,7 @@ Example with window size 3:
 ## Requirements
 
 - Java 17 or higher
+- Maven 3.x
 - Dependencies:
   - Apache Commons Math
   - Apache Commons Lang

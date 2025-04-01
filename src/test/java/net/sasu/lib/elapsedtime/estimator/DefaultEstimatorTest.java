@@ -39,8 +39,10 @@ class DefaultEstimatorTest {
             Assertions.assertEquals(expectedElapsedTime, defaultEstimator.getElapsedTime(),
                     "Error when getting remaining time on round " + i);
 
+            /*
             System.out.println("Elapsed time is " + defaultEstimator.getElapsedTime() +
                     " after completing " + defaultEstimator.getCompletedWorkUnits() + " work units.");
+            */
 
             long expectedRemainingTimeInMs = totalWorkUnits - i;
             Duration expectedRemainingTime = Duration.of(expectedRemainingTimeInMs * timeFactor, ChronoUnit.MILLIS);
