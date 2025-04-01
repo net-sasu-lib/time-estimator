@@ -93,28 +93,24 @@ class BasicEstimatorTest {
         }
     }
 
+    /**
+     * TODO: rewrite test using MockStopwatch, rethink Stopwatch class structure to make it testable
+     *  with MockStopwatch
+     * @throws InterruptedException when something gets interrupted
+     */
     @Test
-    void getRemainingTime_WithConstantWorkRate_ShouldProvideAccurateEstimate() {
-        MockStopwatch mockStopwatch = new MockStopwatch();
-        BasicEstimator estimator = new BasicEstimator(3, 100) {
-            @Override
-            public Stopwatch getStopwatch() {
-                return mockStopwatch;
-            }
-        };
-        // Or add a constructor to BasicEstimator that takes a Stopwatch:
-        // public BasicEstimator(Stopwatch stopwatch, int windowSize, long totalWorkUnits)
+    void getRemainingTime_WithConstantWorkRate_ShouldProvideAccurateEstimate() throws InterruptedException {
+        BasicEstimator estimator = new BasicEstimator(3, 100);
 
         estimator.start();
 
         Instant startTime = Instant.now();
-        mockStopwatch.setCurrentTime(startTime);
 
         // Complete work with constant rate (1 second per 20 units)
-        mockStopwatch.setCurrentTime(startTime.plus(1, ChronoUnit.SECONDS));
+        Thread.sleep(1000);
         estimator.completeWorkUnits(20);
 
-        mockStopwatch.setCurrentTime(startTime.plus(2, ChronoUnit.SECONDS));
+        Thread.sleep(1000);
         estimator.completeWorkUnits(20);
 
         // After 2 seconds and 40 units complete, should estimate 3 seconds remaining for 60 units
