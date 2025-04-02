@@ -16,7 +16,7 @@ Add the following dependency to your `pom.xml`:
 <dependency>
     <groupId>net.sasu.lib.time</groupId>
     <artifactId>time-estimator</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -39,6 +39,48 @@ while (workRemains()) {
     System.out.println("Estimated time remaining: " + 
             estimator.getRemainingTimeAsString());
 }
+```
+
+## Outputting time from the estimator
+
+`time-estimator` builds upon the [elapsedtime](https://github.com/net-sasu-lib/elapsedtime) library for displaying
+durations. This enables a flexible and easy-to-use fluent interface for outputting the remaing time, as seen in 
+these examples:
+```java
+    public static void main(String[] args) throws InterruptedException {
+        BasicEstimator estimator = new BasicEstimator();
+        estimator.initAndStart(100);
+    
+        // As work progresses:
+        while (workRemains()) {
+            doSomeWork();
+            estimator.completeWorkUnits(20);
+            ElapsedTime elapsedTime = estimator.remaining();
+    
+            //four examples of outputting time
+    
+            //prints elapsed time to default output target (system out) in format HH:mm:ss.SSS
+            //this prints "00:00:01.111"
+            elapsedTime.println();
+    
+            //or maybe you want to use a Logger (e.g. SLF4J) instead?
+            //(or any other method implementing java.util.function.Consumer<String>)
+            Logger logger = LoggerFactory.getLogger("myLoggerName");
+            elapsedTime.printTo(logger::info);
+    
+            //you can apply individual formatting (see Apache DurationFormatUtils for syntax)
+            //this prints "1 seconds and 111 milliseconds"
+            elapsedTime.formatDuration("s' seconds and 'S' milliseconds'").println();
+    
+            //this prints "1.111 s"
+            elapsedTime.formatDuration("s'.'SSS' s'").println();
+    
+            // Get estimation
+            Duration remainingTime = estimator.remainingDuration();
+            System.out.println("Estimated time remaining: " +
+                    estimator.getRemainingTimeAsString());
+        }
+    }
 ```
 
 ## Available Estimators
